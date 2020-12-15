@@ -1,12 +1,28 @@
 'use strict'
 
+/**
+ * @author Nael Louis
+ * @description This jsx creates a form with the input from the user and returns a form
+ * to show the user the weather and an image of the current weather for that city
+ */
 let global = {};
 
+/**
+ * @description render the html
+ */
 function setup() {
     ReactDOM.render(<GetWeather/>, document.querySelector('#container'));
 }
 
+/**
+ * @description creates a form with the data we get from the urls 
+ */
 class GetWeather extends React.Component {
+
+    /**
+     * @description parameterized constructor that call super from the React.Component
+     * @param {Obj} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -22,12 +38,21 @@ class GetWeather extends React.Component {
         this.handleChange = this.change.bind(this);
         this.handleSubmit = this.submit.bind(this);
     }
+
+    /**
+     * @description get the values from the user and change city accordingly
+     * @param {Event} e - modifying target value event
+     */
     change(e) {
         this.setState({
             city: e.target.value
         }); 
     }
 
+    /**
+     * @description Fetch json object from the url given and call displayWeather and errorHandler accordingly
+     * @param {Event} e - onClick event
+     */
     submit(e) {
         e.preventDefault();
         
@@ -53,6 +78,10 @@ class GetWeather extends React.Component {
         });
     }
 
+    /**
+     * @description set the values to the state to display once the html is rendered
+     * @param {JSON} json - JSON obj
+     */
     displayWeather(json) {
         this.setState({
             promiseKept: true,
@@ -64,7 +93,10 @@ class GetWeather extends React.Component {
             picture: `http://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`
         });
     }
-
+    /**
+     * @description set values in the state
+     * @param {Error} err - Error obj
+     */
     errorHandler(err) {
         this.setState({
             promiseKept: false,
@@ -74,6 +106,9 @@ class GetWeather extends React.Component {
         });
     }
 
+    /**
+     * @description this function manipulate the DOM to add the html 
+     */
     render() {
         const styleResult = {display: this.state.promiseKept ? 'block' : 'none'};
         const styleError = {display: this.state.errorReceived ? 'block' : 'none'};
